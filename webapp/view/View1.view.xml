@@ -1,0 +1,367 @@
+<mvc:View controllerName="com.dashboardzDeliveryDashboard.controller.View1" xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:viz="sap.viz.ui5.controls"
+	xmlns:viz.data="sap.viz.ui5.data" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:form="sap.ui.layout.form" xmlns:f="sap.f"
+	xmlns:chart="sap.suite.ui.commons">
+	<App>
+		<pages>
+			<SplitContainer id="splitcontainer">
+				<masterPages>
+					<Page title="Filters" class="masterpagecss">
+						<content>
+							<Panel >
+								<VBox class="filters">
+									<Text text="Date Range"/>
+									<DateRangeSelection id="from" placeholder="Choose Date" class="inputFields"/>
+									<!--<DateRangeSelection id="to" placeholder="To" class="inputFields"/>-->
+								</VBox>
+								<ToolbarSpacer width="1rem"></ToolbarSpacer>
+							</Panel>
+							<Panel expandable="false" headerText="Filters">
+								<Input id="customer" placeholder="CustomerName" showValueHelp="true" valueHelpRequest="onValueHelpcustomer" class="ProductValueHelp1"/>
+								<Input id="Material" placeholder="Material" showValueHelp="true" valueHelpRequest="onValueHelpmaterial" class="inputFields"/>
+								<Input id="deliveryplant" placeholder="Delivery Plant" showValueHelp="true" valueHelpRequest="onValueHelpdelievryplant" class="inputFields"/>
+								<!--<ToolbarSpacer width="0.3rem"/>-->
+								<Input id="salesorder" placeholder="Sales Order" class="inputFields"/>
+								<!--<ToolbarSpacer width="0.3rem"/>-->
+								<Input id="delivery" placeholder="Delivery" class="inputFields"/>
+								<Input id="PO" placeholder=" Customer PO" class="inputFields"/>
+							</Panel>
+						</content>
+						<footer>
+							<OverflowToolbar>
+								<ToolbarSpacer ></ToolbarSpacer>
+								<Button text="Search" press="onsearch" type="Emphasized"></Button>
+								<Button text="Clear" press="onclear" type="Emphasized"></Button>
+							</OverflowToolbar>
+						</footer>
+					</Page>
+				</masterPages>
+				<detailPages>
+					<Page class="detailpageclass" id="detail">
+						<customHeader>
+							<Bar>
+								<contentMiddle>
+									<Title id="detaildate" text="Delivery Dashboard" class="detailpage"/>
+								</contentMiddle>
+							</Bar>
+						</customHeader>
+						<content>
+							<Panel class="panel">
+								<HBox>
+									<viz:VizFrame id="idPieChart" width="280px" height="280px" vizType="donut" uiConfig="{applicationSet:'fiori'}"
+										vizProperties="{ plotArea: { dataLabel: { visible: true, type: 'value', formatString: '' }, position: 'outsideFirst' , colorPalette: ['#04AA6D', '#f44336', '#ff9800'] }, legend: { visible: true }, title: { visible: true, text: 'EPCIS File Metrics' } }">
+										<viz:dataset>
+											<viz.data:FlattenedDataset data="{/data}">
+												<viz.data:dimensions>
+													<viz.data:DimensionDefinition name="Status" value="{Status}"/>
+												</viz.data:dimensions>
+												<viz.data:measures>
+													<viz.data:MeasureDefinition name="Count" value="{Count}"/>
+												</viz.data:measures>
+											</viz.data:FlattenedDataset>
+										</viz:dataset>
+										<viz:feeds>
+											<viz.feeds:FeedItem uid="color" type="Dimension" values="Status"/>
+											<viz.feeds:FeedItem uid="size" type="Measure" values="Count"/>
+										</viz:feeds>
+									</viz:VizFrame>
+									<HBox width="50%" class="tileLayout">
+										<GenericTile id="sucessTile" class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" header="Epcis Sent Successfully"
+											press="presssuccess">
+											<tileContent>
+												<TileContent footer="Success">
+													<NumericContent id="numericSuccess" value="{/successCount}" valueColor="Good" withMargin=""/>
+												</TileContent>
+											</tileContent>
+										</GenericTile>
+										<GenericTile id="notSenttile" class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" header="Epcis Not Sent" press="pressnotsent">
+											<tileContent>
+												<TileContent footer="Failure">
+													<NumericContent id="numeriFailure" value="{/notSentValue}" valueColor="Error" withMargin=""/>
+												</TileContent>
+											</tileContent>
+										</GenericTile>
+										<GenericTile id="sentWithWarningsTile" class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" header="Epcis Sent With Warnings"
+											press="presssentwithwarnings">
+											<tileContent>
+												<TileContent footer="Warnings">
+													<NumericContent id="numericSentWithwarnings" value="{/sentWithwarnings}" valueColor="Critical" withMargin=""/>
+												</TileContent>
+											</tileContent>
+										</GenericTile>
+									</HBox>
+								</HBox>
+							</Panel>
+							<Panel height="540px" class="sapUiTinyMarginBegin sapUiTinyMarginEnd sapUiTinyMarginBottom">
+								<chart:ChartContainer autoAdjustHeight="true" id="chartContainer" class="chartContainerClass" title="" fullScreen="false">
+									<chart:ChartContainerContent icon="sap-icon://horizontal-stacked-chart" title="Stacked_bar Chart">
+										<chart:content>
+											<viz:VizFrame id="idStackedBarChart" selectData="myOnClickHandler" width="100%" height="100%" vizType="stacked_bar"
+												vizScales="{valueAxis:{min:5, max:30}}" uiConfig="{applicationSet:'fiori'}"
+												vizProperties="{ plotArea: {xAxis:{ scale:{ fixedRange:false, minValue:1}}, gap:{barSpacing:1}, drawingEffect:'normal',dataLabel: { visible: true, type: 'value', showTotal:true, position: 'outside', style: {fontSize: '12px'}, formatString: '' }, colorPalette: ['#04AA6D', '#f44336', '#ff9800'] }, tooltip: { visible: true },legend: { visible: true }, title: { visible: true, text: 'Customer EPCIS Metrics' },valueAxis: {layout:{width:5}, title: { visible: true, text: 'EPCIS Metrics ' } }, categoryAxis: { scale:{min:5},title: { visible: true, text: 'Customer Name ' } } }">
+												<viz:dataset>
+													<viz.data:FlattenedDataset data="{/failureData}">
+														<viz.data:dimensions>
+															<viz.data:DimensionDefinition name="CustomerName" value="{Customer}"/>
+														</viz.data:dimensions>
+														<viz.data:measures>
+															<viz.data:MeasureDefinition name="Sent" value="{Sent}" class="wiiidth"/>
+															<viz.data:MeasureDefinition name="Failure" value="{Failure}" class="wiiidth"/>
+															<viz.data:MeasureDefinition name="Warnings" value="{SentWithWarnings}" class="wiiidth"/>
+														</viz.data:measures>
+													</viz.data:FlattenedDataset>
+												</viz:dataset>
+												<viz:feeds>
+													<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="CustomerName" class="wiiidth"/>
+													<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Sent,Failure,Warnings" class="wiiidth"/>
+												</viz:feeds>
+												<viz:dependents>
+													<viz:Popover id="idPopOver"></viz:Popover>
+												</viz:dependents>
+											</viz:VizFrame>
+										</chart:content>
+									</chart:ChartContainerContent>
+									<chart:ChartContainerContent icon="sap-icon://table-view" title="Table">
+										<chart:content>
+											<Table id="chartContainerContentTable" items="{/failureData}">
+												<columns>
+													<Column >
+														<Label text="Customer Name"/></Column>
+													<Column >
+														<Label design="Bold" text="Success"/></Column>
+													<Column >
+														<Label design="Bold" text="Failure"/></Column>
+													<Column >
+														<Label design="Bold" text="Warnings"/></Column>
+												</columns>
+												<ColumnListItem press="ok">
+													<Text text="{Customer}"></Text>
+													<Text text="{Sent}"></Text>
+													<Text text="{Failure}"></Text>
+													<Text text="{SentWithWarnings}"></Text>
+												</ColumnListItem>
+											</Table>
+										</chart:content>
+									</chart:ChartContainerContent>
+								</chart:ChartContainer>
+							</Panel>
+						</content>
+					</Page>
+					<Page id="detailDetailHome" title="Delivery Dashboard" backgroundDesign="Solid">
+						<HBox height="300px" class="image" width="400px">
+							<Carousel class="sapUiContentPadding" loop="false" height="80%" width="100%">
+								<Image src="../../../../../webapp/Images/Vkollab.jpg" alt="Example picture of speakers"/>
+							</Carousel>
+						</HBox>
+						<ImageContent src=""/>
+					</Page>
+					<Page id="detailDetail" title="Detail" backgroundDesign="Solid">
+						<customHeader>
+							<Bar>
+								<contentLeft>
+									<Button id="navButtonsucces" icon="sap-icon://nav-back" press="backToDetail" tooltip="Back"/>
+								</contentLeft>
+								<contentRight>
+									<Button id="exportersucces" icon="sap-icon://excel-attachment" press="onExportsucess" tooltip="Export to Excel"/>
+								</contentRight>
+							</Bar>
+						</customHeader>
+						<Table id="tableSuccessId" items="{/}">
+							<columns>
+								<Column>
+									<Label text="Date"/>
+								</Column>
+								<Column>
+									<Label text="Delivery Number"/>
+								</Column>
+								<Column>
+									<Label text="Material Number"/>
+								</Column>
+								<Column width="150px">
+									<Label text="Material Description"/>
+								</Column>
+								<Column>
+									<Label text="Quantity"/>
+								</Column>
+								<Column>
+									<Label text="Price"/>
+								</Column>
+								<Column>
+									<Label text="Epcis Status"/>
+								</Column>
+							</columns>
+							<items>
+								<ColumnListItem>
+									<cells>
+										<Text text="{PGIDate}"/>
+										<Text text="{Delivery}"/>
+										<Text text="{MaterialNO}"/>
+										<Text text="{MaterialDesc}"/>
+										<Text text="{Qty}"/>
+										<Text text="{NetPrice}"/>
+										<Text text="{EpcisOverall}"/>
+									</cells>
+								</ColumnListItem>
+							</items>
+						</Table>
+					</Page>
+					<Page id="epcissenterror">
+						<customHeader>
+							<Bar>
+								<contentLeft>
+									<Button id="navButtonerror" icon="sap-icon://nav-back" press="backToDetail" tooltip="Back"/>
+								</contentLeft>
+								<contentRight>
+									<Button id="exporterror" icon="sap-icon://excel-attachment" press="onExportwarnings" tooltip="Export to Excel"/>
+								</contentRight>
+							</Bar>
+						</customHeader>
+						<Panel id="page1">
+							<Table id="tableSentWithWarningsId" items="{/}">
+								<columns>
+									<Column>
+										<Label text="Date"/>
+									</Column>
+									<Column>
+										<Label text="Delivery Number"/>
+									</Column>
+									<Column>
+										<Label text="Material Number"/>
+									</Column>
+									<Column width="150px">
+										<Label text="Material Description"/>
+									</Column>
+									<Column>
+										<Label text="Quantity"/>
+									</Column>
+									<Column>
+										<Label text="Price"/>
+									</Column>
+									<Column>
+										<Label text="Epcis Status"/>
+									</Column>
+								</columns>
+								<items>
+									<ColumnListItem>
+										<cells>
+											<Text text="{PGIDate}"/>
+											<Text text="{Delivery}"/>
+											<Text text="{MaterialNO}"/>
+											<Text text="{MaterialDesc}"/>
+											<Text text="{Qty}"/>
+											<Text text="{NetPrice}"/>
+											<Text text="{EpcisOverall}"/>
+										</cells>
+									</ColumnListItem>
+								</items>
+							</Table>
+						</Panel>
+					</Page>
+					<Page id="epcissentno">
+						<customHeader>
+							<Bar>
+								<contentLeft>
+									<Button id="navButtonnotsent" icon="sap-icon://nav-back" press="backToDetail" tooltip="Back"/>
+								</contentLeft>
+								<contentRight>
+									<Button id="exporternosent" icon="sap-icon://excel-attachment" press="onExportnotsent" tooltip="Export to Excel"/>
+								</contentRight>
+							</Bar>
+						</customHeader>
+						<Table id="tableNotSentId" items="{/}">
+							<columns>
+								<Column>
+									<Label text="Date"/>
+								</Column>
+								<Column>
+									<Label text="Delivery Number"/>
+								</Column>
+								<Column>
+									<Label text="Material Number"/>
+								</Column>
+								<Column width="150px">
+									<Label text="Material Description"/>
+								</Column>
+								<Column>
+									<Label text="Quantity"/>
+								</Column>
+								<Column>
+									<Label text="Price"/>
+								</Column>
+								<Column>
+									<Label text="Epcis Status"/>
+								</Column>
+							</columns>
+							<items>
+								<ColumnListItem>
+									<cells>
+										<Text text="{PGIDate}"/>
+										<Text text="{Delivery}"/>
+										<Text text="{MaterialNO}"/>
+										<Text text="{MaterialDesc}"/>
+										<Text text="{Qty}"/>
+										<Text text="{NetPrice}"/>
+										<Text text="{EpcisOverall}"/>
+									</cells>
+								</ColumnListItem>
+							</items>
+						</Table>
+					</Page>
+					<Page id="epcisBar">
+						<customHeader>
+							<Bar>
+								<contentLeft>
+									<Button id="navButtonnotsent1" icon="sap-icon://nav-back" press="backToDetail" tooltip="Back"/>
+								</contentLeft>
+								<contentRight>
+									<Button id="exporternosent2" icon="sap-icon://excel-attachment" press="onBarGraphExport" tooltip="Export to Excel"/>
+								</contentRight>
+							</Bar>
+						</customHeader>
+						<Table id="tableBarId" items="{/}">
+							<columns>
+								<Column>
+									<Label text="Date"/>
+								</Column>
+								<Column>
+									<Label text="Delivery Number"/>
+								</Column>
+								<Column>
+									<Label text="Material Number"/>
+								</Column>
+								<Column width="150px">
+									<Label text="Material Description"/>
+								</Column>
+								<Column>
+									<Label text="Quantity"/>
+								</Column>
+								<Column>
+									<Label text="Price"/>
+								</Column>
+								<Column>
+									<Label text="Epcis Status"/>
+								</Column>
+							</columns>
+							<items>
+								<ColumnListItem>
+									<cells>
+										<Text text="{PGIDate}"/>
+										<Text text="{Delivery}"/>
+										<Text text="{MaterialNO}"/>
+										<Text text="{MaterialDesc}"/>
+										<Text text="{Qty}"/>
+										<Text text="{NetPrice}"/>
+										<Text text="{EpcisOverall}"/>
+									</cells>
+								</ColumnListItem>
+							</items>
+						</Table>
+					</Page>
+					<Page id="text">
+						<Text id="idPopoverText" text=""/>
+					</Page>
+				</detailPages>
+			</SplitContainer>
+		</pages>
+	</App>
+</mvc:View>

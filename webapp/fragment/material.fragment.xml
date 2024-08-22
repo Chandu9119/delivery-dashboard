@@ -1,0 +1,12 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Dialog title="Material Dsecription" id="fragMaterial">
+		<SearchField liveChange="onSearchMaterial" width="80%" />
+		<List id="listMaterialId" items="{/}" mode="MultiSelect">
+			<StandardListItem title="{MaterialDesc}" type="Active"></StandardListItem>
+		</List>
+		<buttons>
+			<Button text="Ok" press="onokmaterial"/>
+			<Button text="Close" press="onclosematerial"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

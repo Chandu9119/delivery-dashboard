@@ -1,0 +1,11 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Dialog title="Delivery Plant" id="fragDeliveryPlant">
+		<List id="listDeliveryPlantId" items="{/}" mode="SingleSelectMaster">
+			<StandardListItem title="{Plant}" type="Active"></StandardListItem>
+		</List>
+		<buttons>
+			<Button text="Ok" press="onokdeliveryplant"/>
+			<Button text="Close" press="onclosedeliveryplant"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,45 @@
+<edmx:Edmx
+    xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
+    xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+    xmlns:sap="http://www.sap.com/Protocols/SAPData" Version="1.0">
+    <edmx:DataServices m:DataServiceVersion="2.0">
+        <Schema
+            xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="ZEPCIS_ANALYTICALDISPLAY3_SRV" xml:lang="en" sap:schema-version="1">
+            <EntityType Name="DELIVERYDETAIL" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Delivery"/>
+                    <PropertyRef Name="PurDocNo"/>
+                    <PropertyRef Name="BatchNo"/>
+                </Key>
+                <Property Name="Delivery" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Delivery"/>
+                <Property Name="PurDocNo" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Purchasing Doc."/>
+                <Property Name="BatchNo" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="BatchNo"/>
+                <Property Name="PGIDate" Type="Edm.String" MaxLength="10" sap:unicode="false" sap:label="PGI date"/>
+                <Property Name="SaleDocNO" Type="Edm.String" MaxLength="10" sap:unicode="false" sap:label="Sales Document"/>
+                <Property Name="Plant" Type="Edm.String" MaxLength="4" sap:unicode="false" sap:label="Plant"/>
+                <Property Name="SoldToParty" Type="Edm.String" MaxLength="10" sap:unicode="false" sap:label="Sold-to Party"/>
+                <Property Name="SoldToCustomer" Type="Edm.String" MaxLength="30" sap:unicode="false" sap:label="Sold-To customer Nam"/>
+                <Property Name="MaterialNo" Type="Edm.String" MaxLength="40" sap:unicode="false" sap:label="Material"/>
+                <Property Name="MaterialDesc" Type="Edm.String" MaxLength="40" sap:unicode="false" sap:label="Description"/>
+                <Property Name="Qty" Type="Edm.Decimal" Precision="13" Scale="3" sap:unicode="false" sap:label="Qty (stckp.unt)"/>
+                <Property Name="BaseUnit" Type="Edm.String" MaxLength="3" sap:unicode="false" sap:label="Base Unit" sap:semantics="unit-of-measure"/>
+                <Property Name="NetPrice" Type="Edm.Decimal" Precision="12" Scale="3" sap:unicode="false" sap:label="Net Price"/>
+                <Property Name="EpcisStatus" Type="Edm.String" MaxLength="30" sap:unicode="false" sap:label="EPCIS file sent"/>
+                <Property Name="QtyReconciliation" Type="Edm.String" MaxLength="15" sap:unicode="false" sap:label="Quantity Reconciliat"/>
+                <Property Name="AttpEccGlnStatus" Type="Edm.String" MaxLength="30" sap:unicode="false" sap:label="ATTP/ECC GLN status"/>
+                <Property Name="AttpDelStatus" Type="Edm.String" MaxLength="30" sap:unicode="false" sap:label="ATTP Delivery status"/>
+                <Property Name="EpcisOverall" Type="Edm.String" MaxLength="30" sap:unicode="false" sap:label="EPCIS overall status"/>
+                <Property Name="Flag" Type="Edm.String" MaxLength="5" sap:unicode="false" sap:label="Number indication"/>
+            </EntityType>
+            <EntityContainer Name="ZEPCIS_ANALYTICALDISPLAY3_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="DELIVERYDETAILSet" EntityType="ZEPCIS_ANALYTICALDISPLAY3_SRV.DELIVERYDETAIL" sap:searchable="true" sap:pageable="false" sap:requires-filter="true" sap:content-version="1"/>
+            </EntityContainer>
+            <Annotation
+                xmlns="http://docs.oasis-open.org/odata/ns/edm" Term="Core.SchemaVersion" String="1.0.0"/>
+                <atom:link
+                    xmlns:atom="http://www.w3.org/2005/Atom" rel="self" href="./sap/opu/odata/sap/ZEPCIS_ANALYTICALDISPLAY3_SRV/$metadata"/>
+                    <atom:link
+                        xmlns:atom="http://www.w3.org/2005/Atom" rel="latest-version" href="./sap/opu/odata/sap/ZEPCIS_ANALYTICALDISPLAY3_SRV/$metadata"/>
+                    </Schema>
+                </edmx:DataServices>
+            </edmx:Edmx>
